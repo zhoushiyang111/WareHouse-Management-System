@@ -1,0 +1,10 @@
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\config\WebConfig.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\dto\AdjustStockRequest.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\domain\Item.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\service\NotFoundException.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\controller\ItemController.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\domain\StockTxn.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\service\BadRequestException.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\WmsBackendApplication.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\controller\TxnController.java
+C:\Users\32355\Desktop\project\2\backend\src\main\java\com\wms\service\WarehouseService.java
