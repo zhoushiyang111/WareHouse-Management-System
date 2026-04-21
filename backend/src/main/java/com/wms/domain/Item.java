@@ -22,6 +22,9 @@ public class Item {
   @Min(0)
   private int stock;
 
+  @Size(max = 128)
+  private String customerName;
+
   private Instant createdAt;
   private Instant updatedAt;
 
@@ -63,6 +66,14 @@ public class Item {
 
   public void setStock(int stock) {
     this.stock = stock;
+  }
+
+  public String getCustomerName() {
+    return customerName;
+  }
+
+  public void setCustomerName(String customerName) {
+    this.customerName = customerName;
   }
 
   public Instant getCreatedAt() {
