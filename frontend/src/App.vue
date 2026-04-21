@@ -182,11 +182,13 @@ onMounted(refresh)
 
     <section class="card">
       <div class="cardTitle">新增物料</div>
-      <div class="row">
-        <input v-model="createForm.sku" class="input" placeholder="SKU（唯一）" />
-        <input v-model="createForm.name" class="input" placeholder="名称" />
-        <input v-model="createForm.location" class="input" placeholder="库位（可选）" />
-        <button class="btn primary" :disabled="loading" @click="onCreate">新增</button>
+      <div class="cardBody">
+        <div class="row">
+          <input v-model="createForm.sku" class="input" placeholder="SKU（唯一）" />
+          <input v-model="createForm.name" class="input" placeholder="名称" />
+          <input v-model="createForm.location" class="input" placeholder="库位（可选）" />
+          <button class="btn primary" :disabled="loading" @click="onCreate">新增</button>
+        </div>
       </div>
     </section>
 
@@ -234,12 +236,14 @@ onMounted(refresh)
 
     <section class="card" v-if="editId">
       <div class="cardTitle">编辑物料 #{{ editId }}</div>
-      <div class="row">
-        <input v-model="editForm.sku" class="input" placeholder="SKU" />
-        <input v-model="editForm.name" class="input" placeholder="名称" />
-        <input v-model="editForm.location" class="input" placeholder="库位（可选）" />
-        <button class="btn primary" :disabled="loading" @click="onSaveEdit">保存</button>
-        <button class="btn" :disabled="loading" @click="cancelEdit">取消</button>
+      <div class="cardBody">
+        <div class="row">
+          <input v-model="editForm.sku" class="input" placeholder="SKU" />
+          <input v-model="editForm.name" class="input" placeholder="名称" />
+          <input v-model="editForm.location" class="input" placeholder="库位（可选）" />
+          <button class="btn primary" :disabled="loading" @click="onSaveEdit">保存</button>
+          <button class="btn" :disabled="loading" @click="cancelEdit">取消</button>
+        </div>
       </div>
     </section>
 
@@ -281,48 +285,65 @@ onMounted(refresh)
 <style>
 :root {
   color-scheme: light;
-  --bg: #0b1020;
-  --card: rgba(255, 255, 255, 0.08);
-  --card2: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.12);
-  --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.65);
-  --accent: #6ae4ff;
-  --danger: #ff5f6d;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --card-header: #fafbfc;
+  --border: #e5e7eb;
+  --border-light: #f0f2f5;
+  --text: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --accent: #1890ff;
+  --accent-hover: #40a9ff;
+  --accent-light: #e6f7ff;
+  --danger: #f5222d;
+  --danger-hover: #ff4d4f;
+  --danger-light: #fff2f0;
+  --success: #52c41a;
+  --success-light: #f6ffed;
+  --warning: #faad14;
+  --warning-light: #fffbe6;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
-    "Segoe UI Emoji";
-  background: radial-gradient(1200px 800px at 20% 0%, #18224a 0%, var(--bg) 55%, #060913 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  background: var(--bg);
   color: var(--text);
+  font-size: 14px;
+  line-height: 1.5715;
 }
 
 .page {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 24px 16px 60px;
+  padding: 20px 24px 40px;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 0 4px;
 }
 
 .title {
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: 0.4px;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text);
+  letter-spacing: 0.3px;
 }
 
 .subtitle {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 
 .toolbar {
@@ -332,111 +353,159 @@ body {
 }
 
 .card {
-  background: linear-gradient(180deg, var(--card) 0%, var(--card2) 100%);
+  background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px;
-  margin-top: 12px;
-  backdrop-filter: blur(10px);
+  border-radius: 6px;
+  margin-top: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .cardTitle {
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 20px;
+  background: var(--card-header);
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text);
+}
+
+.card .cardBody {
+  padding: 16px 20px;
 }
 
 .row {
   display: grid;
-  grid-template-columns: 1.1fr 1.3fr 1.1fr auto;
-  gap: 10px;
+  grid-template-columns: 1fr 1.2fr 1fr auto;
+  gap: 12px;
+  align-items: end;
 }
 
 .input {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--card);
   color: var(--text);
   outline: none;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
 
 .input::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-muted);
 }
 
 .btn {
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--card);
   color: var(--text);
   cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .btn:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
+  color: var(--text-muted);
 }
 
 .btn.primary {
-  border-color: rgba(106, 228, 255, 0.35);
-  background: rgba(106, 228, 255, 0.14);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .btn.danger {
-  border-color: rgba(255, 95, 109, 0.35);
-  background: rgba(255, 95, 109, 0.14);
+  border-color: var(--danger);
+  background: #fff;
+  color: var(--danger);
+}
+
+.btn.danger:hover:not(:disabled) {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
 }
 
 .btn.sm {
-  padding: 7px 10px;
-  border-radius: 9px;
+  padding: 5px 12px;
+  font-size: 13px;
+  border-radius: 4px;
 }
 
 .input.sm {
-  padding: 7px 10px;
-  border-radius: 9px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
 }
 
 .alert {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 95, 109, 0.35);
-  background: rgba(255, 95, 109, 0.12);
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: 1px solid #ffccc7;
+  background: var(--danger-light);
+  color: var(--danger);
+  font-size: 14px;
 }
 
 .tableWrap {
   overflow: auto;
-  border-radius: 12px;
   border: 1px solid var(--border);
+  border-top: none;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 880px;
+  min-width: 900px;
 }
 
 .table th,
 .table td {
   text-align: left;
-  padding: 10px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  vertical-align: top;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
 }
 
 .table thead th {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
-  background: rgba(0, 0, 0, 0.18);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--card-header);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table tbody tr:hover {
+  background: #fafafa;
 }
 
 .table tbody tr.active {
-  outline: 1px solid rgba(106, 228, 255, 0.35);
-  background: rgba(106, 228, 255, 0.06);
+  background: var(--accent-light);
 }
 
 .ops {
@@ -450,42 +519,55 @@ body {
   display: grid;
   grid-template-columns: 90px 1fr auto auto;
   gap: 8px;
+  align-items: center;
 }
 
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
 .stock {
-  font-weight: 800;
+  font-weight: 600;
+  color: var(--accent);
 }
 
 .wId {
-  width: 70px;
-}
-
-.wStock {
   width: 80px;
 }
 
+.wStock {
+  width: 90px;
+}
+
 .wOps {
-  width: 420px;
+  width: 440px;
 }
 
 .empty {
-  padding: 18px 10px;
+  padding: 32px 16px;
   text-align: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 .inbound {
-  color: #7dffb3;
-  font-weight: 700;
+  color: var(--success);
+  font-weight: 500;
+  padding: 2px 8px;
+  background: var(--success-light);
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
 }
 
 .outbound {
-  color: #ffc36a;
-  font-weight: 700;
+  color: var(--warning);
+  font-weight: 500;
+  padding: 2px 8px;
+  background: var(--warning-light);
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
 }
 
 @media (max-width: 900px) {
@@ -498,6 +580,9 @@ body {
   }
   .toolbar {
     width: 100%;
+  }
+  .ops2 {
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>
