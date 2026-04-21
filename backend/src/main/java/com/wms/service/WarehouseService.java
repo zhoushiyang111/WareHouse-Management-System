@@ -22,19 +22,20 @@ public class WarehouseService {
 
   public WarehouseService() {
     // seed some demo data
-    createItem(make("SKU-001", "纸箱", "A-01"));
-    createItem(make("SKU-002", "胶带", "A-02"));
-    createItem(make("SKU-003", "泡沫板", "B-01"));
+    createItem(make("SKU-001", "纸箱", "A-01", "阿里巴巴"));
+    createItem(make("SKU-002", "胶带", "A-02", "腾讯科技"));
+    createItem(make("SKU-003", "泡沫板", "B-01", "字节跳动"));
     inbound(1L, 120, "初始化");
     inbound(2L, 80, "初始化");
     inbound(3L, 40, "初始化");
   }
 
-  private static Item make(String sku, String name, String location) {
+  private static Item make(String sku, String name, String location, String customerName) {
     Item i = new Item();
     i.setSku(sku);
     i.setName(name);
     i.setLocation(location);
+    i.setCustomerName(customerName);
     i.setStock(0);
     return i;
   }
@@ -76,6 +77,7 @@ public class WarehouseService {
     item.setSku(input.getSku());
     item.setName(input.getName());
     item.setLocation(input.getLocation());
+    item.setCustomerName(input.getCustomerName());
     item.setStock(Math.max(0, input.getStock()));
     item.setCreatedAt(now);
     item.setUpdatedAt(now);
@@ -96,6 +98,7 @@ public class WarehouseService {
 
     if (input.getName() != null) item.setName(input.getName());
     item.setLocation(input.getLocation());
+    item.setCustomerName(input.getCustomerName());
     item.setUpdatedAt(Instant.now());
     return item;
   }

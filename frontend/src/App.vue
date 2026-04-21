@@ -21,6 +21,7 @@ const createForm = reactive({
   sku: '',
   name: '',
   location: '',
+  customerName: '',
 })
 
 const editId = ref(null)
@@ -28,6 +29,7 @@ const editForm = reactive({
   sku: '',
   name: '',
   location: '',
+  customerName: '',
 })
 
 const qtyById = reactive({})
@@ -53,6 +55,7 @@ function startEdit(item) {
   editForm.sku = item.sku
   editForm.name = item.name
   editForm.location = item.location || ''
+  editForm.customerName = item.customerName || ''
 }
 
 function cancelEdit() {
@@ -60,6 +63,40 @@ function cancelEdit() {
   editForm.sku = ''
   editForm.name = ''
   editForm.location = ''
+  editForm.customerName = ''
+}
+
+function getStorageDuration(createdAt) {
+  if (!createdAt) return '-'
+  const created = new Date(createdAt)
+  const now = new Date()
+  const diffMs = now - created
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))
+
+  if (diffDays > 0) {
+    if (diffHours > 0) {
+      return `${diffDays}天${diffHours}小时`
+    }
+    return `${diffDays}天`
+  } else if (diffHours > 0) {
+    if (diffMinutes > 0) {
+      return `${diffHours}小时${diffMinutes}分钟`
+    }
+    return `${diffHours}小时`
+  } else if (diffMinutes > 0) {
+    return `${diffMinutes}分钟`
+  } else {
+    return '刚刚'
+  }
+}
+
+function getOutboundSummary(itemId) {
+  const itemTxns = txns.value.filter(t => t.itemId === itemId && t.type === 'OUTBOUND')
+  if (itemTxns.length === 0) return '-'
+  const totalQty = itemTxns.reduce((sum, t) => sum + t.quantity, 0)
+  return `出库${itemTxns.length}次，共${totalQty}件`
 }
 
 async function onCreate() {
@@ -71,11 +108,13 @@ async function onCreate() {
       sku: createForm.sku.trim(),
       name: createForm.name.trim(),
       location: createForm.location.trim(),
+      customerName: createForm.customerName.trim(),
       stock: 0,
     })
     createForm.sku = ''
     createForm.name = ''
     createForm.location = ''
+    createForm.customerName = ''
     await refresh()
   } catch (e) {
     error.value = e?.message || String(e)
@@ -93,6 +132,7 @@ async function onSaveEdit() {
       sku: editForm.sku.trim(),
       name: editForm.name.trim(),
       location: editForm.location.trim(),
+      customerName: editForm.customerName.trim(),
       stock: selectedItem.value?.stock ?? 0,
     })
     cancelEdit()
@@ -187,6 +227,7 @@ onMounted(refresh)
           <input v-model="createForm.sku" class="input" placeholder="SKU（唯一）" />
           <input v-model="createForm.name" class="input" placeholder="名称" />
           <input v-model="createForm.location" class="input" placeholder="库位（可选）" />
+          <input v-model="createForm.customerName" class="input" placeholder="所属客户（可选）" />
           <button class="btn primary" :disabled="loading" @click="onCreate">新增</button>
         </div>
       </div>
@@ -202,7 +243,10 @@ onMounted(refresh)
               <th>SKU</th>
               <th>名称</th>
               <th>库位</th>
+              <th>所属客户</th>
+              <th>堆放时长</th>
               <th class="wStock">库存</th>
+              <th>出库记录</th>
               <th class="wOps">操作</th>
             </tr>
           </thead>
@@ -212,7 +256,10 @@ onMounted(refresh)
               <td class="mono">{{ it.sku }}</td>
               <td>{{ it.name }}</td>
               <td>{{ it.location || '-' }}</td>
+              <td>{{ it.customerName || '-' }}</td>
+              <td class="mono">{{ getStorageDuration(it.createdAt) }}</td>
               <td class="stock">{{ it.stock }}</td>
+              <td>{{ getOutboundSummary(it.id) }}</td>
               <td>
                 <div class="ops">
                   <button class="btn sm" :disabled="loading" @click="startEdit(it)">编辑</button>
@@ -227,7 +274,7 @@ onMounted(refresh)
               </td>
             </tr>
             <tr v-if="!items.length">
-              <td colspan="6" class="empty">暂无数据</td>
+              <td colspan="9" class="empty">暂无数据</td>
             </tr>
           </tbody>
         </table>
@@ -237,10 +284,11 @@ onMounted(refresh)
     <section class="card" v-if="editId">
       <div class="cardTitle">编辑物料 #{{ editId }}</div>
       <div class="cardBody">
-        <div class="row">
+        <div class="row full">
           <input v-model="editForm.sku" class="input" placeholder="SKU" />
           <input v-model="editForm.name" class="input" placeholder="名称" />
           <input v-model="editForm.location" class="input" placeholder="库位（可选）" />
+          <input v-model="editForm.customerName" class="input" placeholder="所属客户（可选）" />
           <button class="btn primary" :disabled="loading" @click="onSaveEdit">保存</button>
           <button class="btn" :disabled="loading" @click="cancelEdit">取消</button>
         </div>
@@ -376,9 +424,13 @@ body {
 
 .row {
   display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr auto;
+  grid-template-columns: 1fr 1.2fr 1fr 1fr auto;
   gap: 12px;
-  align-items: end;
+  align-items: center;
+}
+
+.row.full {
+  grid-template-columns: 1fr 1.2fr 1fr 1fr auto auto;
 }
 
 .input {
@@ -555,7 +607,7 @@ body {
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 900px;
+  min-width: 1200px;
 }
 
 .table th,
