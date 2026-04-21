@@ -221,8 +221,8 @@ onMounted(refresh)
                 <div class="ops2">
                   <input v-model="qtyById[it.id]" class="input sm" placeholder="数量" />
                   <input v-model="noteById[it.id]" class="input sm" placeholder="备注（可选）" />
-                  <button class="btn sm" :disabled="loading" @click="onInbound(it)">入库</button>
-                  <button class="btn sm" :disabled="loading" @click="onOutbound(it)">出库</button>
+                  <button class="btn sm success" :disabled="loading" @click="onInbound(it)">入库</button>
+                  <button class="btn sm warning" :disabled="loading" @click="onOutbound(it)">出库</button>
                 </div>
               </td>
             </tr>
@@ -384,19 +384,32 @@ body {
 .input {
   width: 100%;
   box-sizing: border-box;
-  padding: 8px 12px;
+  padding: 7px 12px;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
   outline: none;
   font-size: 14px;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
+  height: 32px;
+  line-height: 1.5715;
+}
+
+.input:hover:not(:disabled) {
+  border-color: #c9cdd4;
 }
 
 .input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.15);
+  border-color: var(--accent);
+}
+
+.input:disabled {
+  background-color: #f5f7fa;
+  color: var(--text-muted);
+  cursor: not-allowed;
 }
 
 .input::placeholder {
@@ -404,15 +417,20 @@ body {
 }
 
 .btn {
-  padding: 8px 16px;
+  padding: 7px 16px;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  height: 32px;
+  line-height: 1.5715;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover:not(:disabled) {
@@ -420,21 +438,34 @@ body {
   border-color: var(--accent);
 }
 
+.btn:active:not(:disabled) {
+  color: #096dd9;
+  border-color: #096dd9;
+}
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   color: var(--text-muted);
+  background: #f5f7fa;
+  border-color: #d9d9d9;
 }
 
 .btn.primary {
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
 
 .btn.primary:hover:not(:disabled) {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
+}
+
+.btn.primary:active:not(:disabled) {
+  background: #096dd9;
+  border-color: #096dd9;
 }
 
 .btn.danger {
@@ -449,16 +480,60 @@ body {
   color: #fff;
 }
 
+.btn.danger:active:not(:disabled) {
+  background: #cf1322;
+  border-color: #cf1322;
+  color: #fff;
+}
+
+.btn.success {
+  border-color: var(--success);
+  background: #fff;
+  color: var(--success);
+}
+
+.btn.success:hover:not(:disabled) {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+
+.btn.success:active:not(:disabled) {
+  background: #389e0d;
+  border-color: #389e0d;
+  color: #fff;
+}
+
+.btn.warning {
+  border-color: var(--warning);
+  background: #fff;
+  color: var(--warning);
+}
+
+.btn.warning:hover:not(:disabled) {
+  background: var(--warning);
+  border-color: var(--warning);
+  color: #fff;
+}
+
+.btn.warning:active:not(:disabled) {
+  background: #d48806;
+  border-color: #d48806;
+  color: #fff;
+}
+
 .btn.sm {
-  padding: 5px 12px;
+  padding: 4px 12px;
   font-size: 13px;
   border-radius: 4px;
+  height: 28px;
 }
 
 .input.sm {
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 4px;
   font-size: 13px;
+  height: 28px;
 }
 
 .alert {
@@ -512,14 +587,23 @@ body {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  align-items: center;
 }
 
 .ops2 {
   display: grid;
-  grid-template-columns: 90px 1fr auto auto;
+  grid-template-columns: 100px 1fr auto auto;
   gap: 8px;
   align-items: center;
+}
+
+.ops2 .input {
+  margin: 0;
+}
+
+.ops2 .btn {
+  margin: 0;
 }
 
 .mono {
